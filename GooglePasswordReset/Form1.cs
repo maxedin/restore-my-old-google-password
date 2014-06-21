@@ -15,7 +15,7 @@ namespace GooglePasswordReset
         }
 
 
-        private void ResetPassword()
+        private void InvokePasswordReset()
         {
             if (numericUpDown1.Value <= 0)
             {
@@ -27,15 +27,27 @@ namespace GooglePasswordReset
             HtmlDocument document = webBrowser1.Document;
             HtmlElement element = null;
 
+            //stop if error on the form
+            element = document.GetElementById("errormsg_0_OldPasswd");
+            if (element.InnerHtml != null)
+            {
+                _doReset = false;
+                //tbNewPassword.Visible = labelNewPwd.Visible = false;
+                btStart.Enabled = true;
+                return;
+            }
+
+            //insert old password on the form
             element = document.GetElementById("OldPasswd");
             element.SetAttribute("value", tbOldPassword.Text);
 
+            //insert old password on the form
             element = document.GetElementById("Passwd");
             element.SetAttribute("value", tbNewPassword.Text);
-
             element = document.GetElementById("PasswdAgain");
             element.SetAttribute("value", tbNewPassword.Text);
 
+            //invoke Save button on the form
             element = document.GetElementById("save"); 
             element.InvokeMember("click");
 
@@ -50,7 +62,7 @@ namespace GooglePasswordReset
                 return;
             if (e.Url.AbsoluteUri == "https://accounts.google.com/b/0/EditPasswd")
             {
-                ResetPassword();
+                InvokePasswordReset();
             }
             //fallback to edit password page if something went wrong
             if (_doReset && e.Url.AbsoluteUri != "https://accounts.google.com/b/0/EditPasswd")
