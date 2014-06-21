@@ -21,6 +21,7 @@ namespace GooglePasswordReset
             {
                 _doReset = false;
                 //tbNewPassword.Visible = labelNewPwd.Visible = false;
+                btStart.Enabled = true;
                 return;
             }
             HtmlDocument document = webBrowser1.Document;
@@ -51,7 +52,8 @@ namespace GooglePasswordReset
             {
                 ResetPassword();
             }
-            if (e.Url.AbsoluteUri == "https://www.google.com/settings/#")
+            //fallback to edit password page if something went wrong
+            if (_doReset && e.Url.AbsoluteUri != "https://accounts.google.com/b/0/EditPasswd")
             {
                 webBrowser1.Navigate("https://www.google.com/accounts/b/0/EditPasswd");
             }
@@ -60,8 +62,9 @@ namespace GooglePasswordReset
         private void btStart_Click(object sender, EventArgs e)
         {
             //tbNewPassword.Visible = labelNewPwd.Visible = true;
-            _pswTempalate = tbOldPassword.Text + "XXX";
+            _pswTempalate = tbOldPassword.Text + "Reset";
             _doReset = true;
+            btStart.Enabled = false;
             tbNewPassword.Text = _pswTempalate + numericUpDown1.Value.ToString();
             webBrowser1.Navigate("https://www.google.com/accounts/b/0/EditPasswd");
         }
