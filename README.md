@@ -5,3 +5,6 @@ Google does not allow you to use previous password for your account for security
 What can we do? - Just reset password 100 times! 
 Seems like Google stores information about your last 100 passwords. 
 This tool will help you to reset password automatically many many times. 
+
+Link to download application:
+https://github.com/maxedin/restore-my-old-google-password/releases
